@@ -1,0 +1,7 @@
+# ninja log v5
+65	976	1667273793756429000	test/CMakeFiles/array_list_test.dir/array_list_test.cpp.o	a1008bd63b49dbff
+1080	1643	1667273794440657200	test/array_list_test	5ec69425271b55be
+58	1853	1667273794627042900	test/CMakeFiles/insertion_sort_test.dir/insertion_sort_test.cpp.o	71897ff3950a5c13
+54	2221	1667273795015022500	test/CMakeFiles/merge_sort_test.dir/merge_sort_test.cpp.o	2ad0070823ac1fb6
+1870	2378	1667273795173534500	test/insertion_sort_test	9b0bf2bb8266359e
+2243	2701	1667273795501380200	test/merge_sort_test	cb336f582d1c3988

@@ -1,0 +1,4 @@
+# ninja log v5
+18	2289	1667999615269093300	CMakeFiles/project1-2.dir/src/main.cpp.o	84ffea822c4f444d
+23	2421	1667999615333211200	CMakeFiles/project1-2.dir/src/complete_graph.cpp.o	7444837aa653f3e7
+2435	3195	1667999616178289200	main	b36ff923dd668202

@@ -4,6 +4,7 @@
 
 #include "array_list.hpp" /* array_list */
 #include <algorithm>
+#include <functional>
 
 namespace algo {
     namespace sort {
@@ -41,43 +42,9 @@ namespace algo {
                 }
             }
         }
-        
 
-        template<typename T> 
-        void merge_sort_recursive(T *first, T *last) {
-            if (first >= last - 1) {
-                return;
-            }
-
-            auto mid = first + (last - first) / 2;
-
-            merge_sort_recursive(first, mid);
-            merge_sort_recursive(mid, last);
-            merge(first, mid, last, [](const T &a, const T &b) {
-                return a < b;
-            });
-        }
-
-        template<typename T>
-        void merge_sort_iterative(T *first, T *last) {
-            auto size = last - first;
-            auto compare = [](const T &a, const T &b) {
-                return a < b;
-            };
-
-            for (decltype(size) group_size = 1; group_size < size; group_size *= 2) {
-                
-                for (auto start = first; start < last; start += 2 * group_size) {
-                    auto mid = std::min(last, start + group_size);
-                    auto end = std::min(last, start + 2 * group_size);
-
-                    merge(start, mid, end, compare);
-                }
-            }
-        }    
-
-        template<typename T, typename Compare> 
-        void merge_sort_recursive(T *first, T *last, Compare compare) {
+        template<typename T, typename Compare = std::less<T>> 
+        void merge_sort_recursive(T *first, T *last, Compare compare = Compare()) {
             if (first >= last - 1) {
                 return;
             }
@@ -89,8 +56,8 @@ namespace algo {
             merge(first, mid, last, compare);
         }
 
-        template<typename T, typename Compare>
-        void merge_sort_iterative(T *first, T *last, Compare compare) {
+        template<typename T, typename Compare = std::less<T>>
+        void merge_sort_iterative(T *first, T *last, Compare compare = Compare()) {
             auto size = last - first;
             decltype(size) group_size = 1;
 

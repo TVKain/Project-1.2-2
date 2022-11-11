@@ -1,4 +1,0 @@
-ArrayListTest 1 0.0103898
-InsertionSortTest 1 0.00991385
-MergeSortTest 1 0.0102259
----

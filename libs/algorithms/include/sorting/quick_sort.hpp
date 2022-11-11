@@ -4,6 +4,7 @@
 
 #include <utility> /* std::swap std::pair */
 #include "array_list.hpp" /* ds::array_list */
+#include <functional>
 
 namespace algo {
     namespace sort {
@@ -28,47 +29,8 @@ namespace algo {
             }
         }
         
-
-        template <typename T>
-        void quick_sort_recursive(T *first, T *last) {
-            if (first + 1 >= last) {
-                return;
-            }
-
-            auto pivot = quick_sort_partition(first, last, [](const T &a, const T &b) {
-                return a < b;
-            });
-            quick_sort_recursive(first, pivot);
-            quick_sort_recursive(pivot + 1, last);
-        }
-
-        template <typename T>
-        void quick_sort_iterative(T *first, T *last) {
-            ds::array_list<std::pair<T*, T*>> stack = {{first, last}};
-
-            while (!stack.empty()) {
-                auto start = stack.back().first;
-                auto end = stack.back().second; 
-                stack.pop_back();
-
-                auto pivot = quick_sort_partition(start, end, [](const T &a, const T &b) {
-                    return a < b;
-                });
-
-                if (pivot - 1 > start) {
-                    stack.push_back(std::make_pair(start, pivot));
-                }
-
-                if (pivot + 1 < end - 1) {
-                    stack.push_back(std::make_pair(pivot + 1, end));
-                }
-
-            }
-            
-        }
-
-        template <typename T, typename Compare>
-        void quick_sort_recursive(T *first, T *last, Compare compare) {
+        template <typename T, typename Compare = std::less<T>>
+        void quick_sort_recursive(T *first, T *last, Compare compare = Compare()) {
             if (first + 1 >= last) {
                 return;
             }
@@ -78,8 +40,8 @@ namespace algo {
             quick_sort_recursive(pivot + 1, last, compare);
         }
 
-        template <typename T, typename Compare>
-        void quick_sort_iterative(T *first, T *last, Compare compare) {
+        template <typename T, typename Compare = std::less<T>>
+        void quick_sort_iterative(T *first, T *last, Compare compare = Compare()) {
             ds::array_list<std::pair<T*, T*>> stack = {{first, last}};
 
             while (!stack.empty()) {

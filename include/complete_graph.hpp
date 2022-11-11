@@ -16,9 +16,12 @@ public:
  
     std::pair<int, ds::array_list<int>> tsp_brute_force(int);
     int calculate_path_cost(ds::array_list<int>);
-    ds::array_list<int> tsp_branch_and_bound();
+    
+    std::pair<int, ds::array_list<int>> tsp_branch_and_bound_v1(int);
+    
     ds::array_list<int> calculate_reachable_nodes(ds::array_list<int>);
-
+    int calculate_current_low_bound(ds::array_list<int> &);
+    int get_current_smallest_edge(ds::array_list<int> &);
     void print_tsp_solution();
 };
 

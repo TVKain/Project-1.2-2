@@ -4,6 +4,8 @@
 
 #include <iostream>
 #include <cstddef>
+#include <functional>
+#include <algorithm>
 
 namespace algo {
     namespace heap {
@@ -15,6 +17,10 @@ namespace algo {
 
             constexpr std::size_t right(std::size_t i) {
                 return (i << 1) + 2;
+            }
+
+            constexpr std::size_t parent(std::size_t i) {
+                return (i - 1) >> 1;
             }
         }
 
@@ -47,23 +53,36 @@ namespace algo {
             
         }
 
-        template <typename T>
-        void make_heap(T *first, T *last) {
+        template <typename T, typename Compare = std::less<T>>
+        void make_heap(T *first, T *last, Compare compare = Compare()) {
             auto size = last - first;
 
-            for (auto i = size / 2; i >= 0; --i) {
-                heapify(first, last, i, [](const T &a, const T &b) {
-                    return a < b;
-                });
-            }
-        }
-
-        template <typename T, typename Compare>
-        void make_heap(T *first, T *last, Compare compare) {
-            auto size = last - first;
             for (auto i = size / 2; i >= 0; --i) {
                 heapify(first, last, i, compare);
             }
+        }
+
+        template <typename T, typename Compare = std::less<T>>
+        void push_heap(T *first, T *last, Compare compare = Compare()) {
+            auto current = last - first - 1;
+            auto parent_index = parent(current);
+
+            /* While the parent[i] < i  */
+            while (compare(*(first + parent_index), *(first + current))) {
+                std::swap(*(first + parent_index), *(first + current));
+                current = parent_index;
+                parent_index = parent(current);
+
+                if (current == 0) {
+                    break;
+                }
+            }
+         }
+
+        template <typename T, typename Compare = std::less<T>> 
+        void pop_heap(T *first, T *last, Compare compare = Compare()) {
+            std::swap(*first, *(last - 1));
+            heapify(first, last - 2, 0, compare);
         }
 
     }

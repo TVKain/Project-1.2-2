@@ -4,27 +4,12 @@
 
 #include "heap.hpp" /* heap::make_heap heap::heapify*/
 #include <utility> /* std::swap */
+#include <functional> /* std::less */
 
 namespace algo {
     namespace sort {
-        template <typename T>
-        void heap_sort(T *first, T *last) {
-            auto end = last;
-
-            auto compare = [](const T &a, const T &b) {
-                return a < b;
-            };
-
-            heap::make_heap(first, last, compare);
-            for (auto it = last - 1; it > first; --it) {
-                std::swap(*first, *it);
-                --end;
-                heap::heapify(first, end, 0, compare);
-            }
-        }
-
-        template <typename T, typename Compare>
-        void heap_sort(T *first, T *last, Compare compare) {
+        template <typename T, typename Compare = std::less<T>>
+        void heap_sort(T *first, T *last, Compare compare = Compare()) {
             auto end = last;
 
             heap::make_heap(first, last, compare);

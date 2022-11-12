@@ -259,6 +259,7 @@ namespace ds {
 
             for (iterator it = end(); it != &data_[index]; --it) {
                 *it = *(it - 1);
+                allocator_.destroy(it - 1);
             }
             allocator_.construct(&data_[index], value);
             size_++;
@@ -268,19 +269,21 @@ namespace ds {
         
         /* Erase an element at the position specified by the iterator pos */
         iterator erase(const_iterator pos) {
-            const size_type index = pos - data_;
+            const difference_type index = pos - data_;
 
             if (index < 0 || index > size_) {
                 throw std::out_of_range("Iterator is out of range");
             }
-
-            iterator it = data_ + index;
             
-            std::copy(it + 1, data_ + size_, it);
-            allocator_.destroy(data_ + size_ - 1);
+            allocator_.destroy(data_ + index);
+            for (iterator it = &data_[index]; it != end() - 1; ++it) {
+                *it = *(it + 1);
+                allocator_.destroy(it + 1);
+            }
+            
             --size_;
 
-            return it;
+            return data_ + index;
         }        
 
     private:

@@ -67,5 +67,17 @@ int main() {
         return 1;
     }
 
+    if (g.min_edge_weight() != 1) {
+        return 1;
+    }
+
+    auto ret5 = g.remove_vertex(0);
+
+    std::cout << ret5 << std::endl << std::endl;
+
+    auto ret4 = g.remove_vertices({0, 1});
+
+    std::cout << ret4;
+
     return 0;
 }

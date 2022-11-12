@@ -46,7 +46,10 @@ int main() {
 
     auto z = v1[1];
 
-    std::cout << std::endl << z[0] << z[1] << z[2] << std::endl;
+    v1.erase(v1.begin());
+
+
+
 
     return 0;
 }

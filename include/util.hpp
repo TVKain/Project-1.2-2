@@ -13,7 +13,6 @@ namespace util {
     void print_matrix(ds::array_list<ds::array_list<int>> &);
     void print_array(ds::array_list<int> &);
 
-
     ds::array_list<ds::array_list<int>> generate_cost_matrix(int, int, int);
     int generate_random_num(const int &, const int &);
 

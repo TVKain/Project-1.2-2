@@ -1,0 +1,10 @@
+ArrayListTest 1 0.0164183
+InsertionSortTest 1 0.0143477
+MergeSortTest 1 0.0145947
+BubbleSortTest 1 0.0138896
+HeapSortTest 1 0.0144092
+QuickSortTest 1 0.0144474
+PriorityQueueTest 1 0.0137343
+HeapTest 1 0.0154128
+UndirectedGraphTest 1 0.0203585
+---

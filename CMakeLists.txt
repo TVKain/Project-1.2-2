@@ -44,6 +44,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "main")
 
 target_link_libraries(${PROJECT_NAME}
     ds::array_list
+    ds::priority_queue
     algo::sort
     algo::heap
 )

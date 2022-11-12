@@ -1,40 +1,23 @@
 #include <iostream>
 #include <chrono>
 #include <functional>
+#include <vector>
 
 #include "array_list.hpp"
 #include "complete_graph.hpp"
 #include "util.hpp"
 
 int main() {
-    ds::array_list<ds::array_list<int>> cost_matrix;
+    std::vector<std::vector<int>> v = { {1,2,3,4},{5,6,7,8} };
 
-    util::read_matrix_from_file("graph5.txt", cost_matrix);
+    v.insert(v.begin(), {9,8,2,1});
 
-    util::print_matrix(cost_matrix);
-    std::cout << std::endl;
-    
-    complete_graph g(cost_matrix);
-
-    /*
-    auto bf = util::bench_time<std::chrono::seconds>([&g]() -> void {
-        auto [min, path] = g.tsp_brute_force(0);
-        std::cout << "BF: " << min << std::endl;
-    });
-    std::cout << "Time: " << bf.count() << std::endl;
-    */
-    
-
-    auto bnb = util::bench_time<std::chrono::milliseconds>([&g]() -> void {
-        auto [min, path] = g.tsp_branch_and_bound_v1(0);
-        std::cout << "BNB: " << min << std::endl;
-        for (int i = 0; i < path.size(); ++i) {
-            std::cout << path[i] + 1 << "->";
+    for (int i = 0; i < v.size(); ++i) {
+        for (int j = 0; j < v[0].size(); ++j) {
+            std::cout << v[i][j] << " ";
         }
         std::cout << std::endl;
-    });
-    std::cout << "Time: " << bnb.count() << std::endl;
-
+    }    
 
 
     return 0;

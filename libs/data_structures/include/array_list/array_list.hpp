@@ -15,13 +15,12 @@
 #include <memory>
 
 namespace ds {
-    
     template <typename T, class Allocator = std::allocator<T>>
     class array_list {
     
     public:
         typedef std::size_t size_type;
-        typedef std::ptrdiff_t different_type;
+        typedef std::ptrdiff_t difference_type;
         typedef T value_type;
         typedef T& reference;
         typedef T* iterator;
@@ -38,11 +37,11 @@ namespace ds {
         }
 
         iterator end() {
-            return data_ + size_;
+            return &data_[size_];
         }
 
         const_iterator cend() const {
-            return data_ + size_;
+            return &data_[size_];
         }
 
         /* Capacity */
@@ -132,7 +131,6 @@ namespace ds {
             std::copy(a.cbegin(), a.cend(), data_);
             return *this;
         }
-        
         
 
         /* Destructor */
@@ -249,25 +247,23 @@ namespace ds {
 
         /* Insert an element to the position specified by the iterator pos */
         iterator insert(const_iterator pos, const value_type& value) {
-            const size_type index = pos - data_;
+            const difference_type index = pos - begin();
 
-            if (index < 0 || index > size_) {
-                throw std::out_of_range("Iterator is out of range");
+            if (index < 0 || index > size()) {
+                throw new std::out_of_range("Insert index is out of range");
             }
 
-            if (size_ + 1 > capacity_) {
-                capacity_ == 0 ? realloc(1) : realloc(capacity_ * 2);
+            if (size() + 1 > capacity()) {
+                capacity() == 0 ? realloc(1) : realloc(capacity() * 2);
             }
 
-            iterator it = data_ + index;
-
-            std::copy(it, data_ + size_, it + 1);
+            for (iterator it = end(); it != &data_[index]; --it) {
+                *it = *(it - 1);
+            }
+            allocator_.construct(&data_[index], value);
+            size_++;
             
-            allocator_.construct(data_ + index, value);
-            
-            ++size_;
-
-            return it;
+            return &data_[index];
         } 
         
         /* Erase an element at the position specified by the iterator pos */

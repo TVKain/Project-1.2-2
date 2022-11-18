@@ -1,0 +1,19 @@
+# ninja log v5
+105	2875	1668596590746846100	test/CMakeFiles/bubble_sort_test.dir/bubble_sort_test.cpp.o	74f7cdddeaf02fc3
+101	3012	1668596590804598800	test/CMakeFiles/quick_sort_test.dir/quick_sort_test.cpp.o	d80849bff9498dbb
+113	3053	1668596590834900200	test/CMakeFiles/merge_sort_test.dir/merge_sort_test.cpp.o	74e82d75cdb1bf0f
+120	3104	1668596590747877200	test/CMakeFiles/insertion_sort_test.dir/insertion_sort_test.cpp.o	ef3c270788dbb597
+91	3426	1668596591288447500	test/CMakeFiles/priority_queue_test.dir/priority_queue_test.cpp.o	d48e556416b7a590
+95	3482	1668596591288447500	test/CMakeFiles/heap_sort_test.dir/heap_sort_test.cpp.o	b343c239a8180438
+108	3523	1668596591348285600	test/CMakeFiles/heap_test.dir/heap_test.cpp.o	a6bd1cde3e64237f
+124	3569	1668596591427664000	test/CMakeFiles/array_list_test.dir/array_list_test.cpp.o	272f53ea8fee3a02
+2994	3965	1668596591839684000	test/bubble_sort_test	dec2fc93b09c4b17
+3133	4172	1668596592040710700	test/insertion_sort_test	9b0bf2bb8266359e
+3078	4204	1668596592071370400	test/merge_sort_test	cb336f582d1c3988
+3032	4264	1668596592137786400	test/quick_sort_test	a7fd37f2eb3ea72b
+3543	4425	1668596592303946300	test/heap_test	8fc4477d46a4249f
+3500	4438	1668596592318585000	test/heap_sort_test	bf541398cc93d238
+3462	4444	1668596592323137800	test/priority_queue_test	7fa46ebea0262577
+3587	4492	1668596592371761300	test/array_list_test	5ec69425271b55be
+88	5092	1668596592963429500	test/CMakeFiles/undirected_graph_test.dir/undirected_graph_test.cpp.o	777d6d094403c7cf
+5112	5838	1668596593716404800	test/undirected_graph_test	39a7827ad0433577

@@ -46,12 +46,16 @@ namespace ds {
         /* Copy constructor */
         priority_queue(const priority_queue& other) : comp_(other.comp_), c_(other.c_) {}
 
-        /* Overload equals operator to be copy */
+
+        /*
+        // Overload equals operator to be copy 
         priority_queue& operator=(const priority_queue& other) {
             comp_ = other.comp_;
             c_ = other.c_;
             return *this;
         }
+        */
+        
 
         /* Return reference to the first element (the largest - default) of the priority queue */
         reference top() {

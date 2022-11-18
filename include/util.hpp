@@ -5,15 +5,19 @@
 #include <string>
 #include <chrono>
 #include <iostream>
-
+#include <limits>
 #include "array_list.hpp"
 
+#define clear_input() std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n') 
+
 namespace util {
-    void read_matrix_from_file(std::string, ds::array_list<ds::array_list<int>> &);
+    ds::array_list<ds::array_list<int>> read_matrix_from_file(const std::string &);
     void print_matrix(ds::array_list<ds::array_list<int>> &);
     void print_array(ds::array_list<int> &);
 
+    ds::array_list<ds::array_list<int>> generate_symmetric_cost_matrix(int, int, int);
     ds::array_list<ds::array_list<int>> generate_cost_matrix(int, int, int);
+
     int generate_random_num(const int &, const int &);
 
     template<typename Duration = std::chrono::nanoseconds, typename F, typename ... Args>
@@ -23,6 +27,8 @@ namespace util {
         const auto end = std::chrono::high_resolution_clock::now();
         return std::chrono::duration_cast<Duration>(end - beg);
     }
+
+    
 }
 
 

@@ -10,10 +10,12 @@
 #include <random>
 
 namespace util {
-    void read_matrix_from_file(std::string file_path, ds::array_list<ds::array_list<int>> &matrix) {
+    ds::array_list<ds::array_list<int>> read_matrix_from_file(const std::string &file_path) {
         std::ifstream file(file_path);
         ds::array_list<int> current_row;
         int num;
+
+        ds::array_list<ds::array_list<int>> matrix;
 
 
         if (file.is_open()) {
@@ -29,6 +31,8 @@ namespace util {
         } else {
             std::cout << "Can't open file" << std::endl;
         }
+
+        return matrix;
     }
 
     void print_matrix(ds::array_list<ds::array_list<int>> &matrix) {
@@ -47,6 +51,19 @@ namespace util {
     }
 
     ds::array_list<ds::array_list<int>> generate_cost_matrix(int size, int cost_low_bound, int cost_high_bound) {
+        ds::array_list<ds::array_list<int>> ret(size, ds::array_list<int>(size, 0));
+
+        for (int i = 0; i < size; ++i) {
+            for (int j = 0; j < size; ++j) {
+                ret[i][j] = i == j ? 0 : generate_random_num(cost_low_bound, cost_high_bound);
+            }
+        }
+
+        return ret;
+    }
+
+
+    ds::array_list<ds::array_list<int>> generate_symmetric_cost_matrix(int size, int cost_low_bound, int cost_high_bound) {
         ds::array_list<ds::array_list<int>> ret(size, ds::array_list<int>(size, 0));
 
         for (int i = 0; i < size; ++i) {

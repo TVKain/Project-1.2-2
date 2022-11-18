@@ -124,11 +124,24 @@ namespace ds {
          */
         
         array_list& operator=(const array_list& a) {
+            if (data_ != nullptr) {
+                for (size_type i = 0; i < size_; ++i) {
+                    allocator_.destroy(data_ + i);
+                }
+                allocator_.deallocate(data_, capacity_);
+                data_ = nullptr;
+            }
+            
             size_ = a.size();
             capacity_ = a.capacity();
             data_ = allocator_.allocate(capacity_);
             
-            std::copy(a.cbegin(), a.cend(), data_);
+            
+            for (size_type i = 0; i < size_; ++i) {
+                data_[i] = a.data_[i];
+            }
+
+
             return *this;
         }
         

@@ -23,3 +23,6 @@ add_test(NAME PriorityQueueTest COMMAND priority_queue_test)
 add_test(NAME HeapTest COMMAND heap_test)
 
 add_test(NAME UndirectedGraphTest COMMAND undirected_graph_test)
+
+
+add_test(NAME LinkedListTest COMMAND linked_list_test)

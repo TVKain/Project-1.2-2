@@ -44,12 +44,8 @@ namespace ds {
         typedef std::pair<vertex_type, vertex_type> edge_type;
         
 
-        /***************************************
-         * @brief:
-         *          construct an empty graph
-         *          can't do much with it really
-         ***************************************/
-         undirected_graph() : cost_matrix(matrix()), vertices(ds::array_list<vertex_type>()) {}
+        undirected_graph() : cost_matrix(matrix()), vertices(ds::array_list<vertex_type>()) {}
+
 
         /**********************************************************************
          * @brief: 
@@ -57,7 +53,7 @@ namespace ds {
          *          build an array of vertices from cost matrix as well  
          * @param: cm - matrix
          **********************************************************************/
-        undirected_graph(matrix &cm) : cost_matrix(cm) {
+        undirected_graph(const matrix &cm) : cost_matrix(cm), vertices(ds::array_list<vertex_type>()) {
             for (int i = 0; i < cm.size(); ++i) {
                 vertices.push_back(i);
             }
@@ -178,11 +174,10 @@ namespace ds {
          *******************************************/
         friend std::ostream& operator<<(std::ostream &os, const undirected_graph &ug) {
             auto size = ug.vertices_size();
-            auto matrix = ug.cost_matrix;
-            
+
             for (int i = 0; i < size; ++i) {
                 for (int j = 0; j < size; ++j) {
-                    os << std::setw(4) << matrix[i][j] << " ";
+                    os << std::setw(4) << ug.cost_matrix[i][j] << " ";
                 }
                 os << std::endl;
             }

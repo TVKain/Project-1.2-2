@@ -10,65 +10,6 @@ namespace ds {
     template <typename T, class Allocator = std::allocator<T>>
     class array_list {
     public:
-        template <typename U>
-        class array_list_iterator {
-        public:
-            typedef U value_type;
-            typedef value_type& reference;
-            typedef const value_type& const_reference;
-            typedef value_type* pointer;
-            typedef const pointer const_pointer;
-            typedef std::ptrdiff_t difference_type;
-            typedef std::size_t size_type;   
-
-            array_list_iterator(const pointer &t_curr) : m_curr(t_curr) {}
-
-            pointer operator()() {
-                return m_curr;
-            }
-
-            const_pointer operator()() const {
-                return m_curr;
-            }
-
-            array_list_iterator& operator+(const difference_type &diff) {
-                return array_list_iterator(m_curr + diff);
-            }
-
-            array_list_iterator& operator-(const difference_type &diff) {
-                return array_list_iterator(m_curr - diff);
-            }
-            
-            array_list_iterator& operator++() {
-                ++m_curr;
-                return *this;
-            }
-
-            array_list_iterator& operator--() {
-                --m_curr;
-                return *this;
-            }
-
-            bool operator==(const array_list_iterator &other) const {
-                return m_curr == other.m_curr;
-            }
-
-            bool operator!=(const array_list_iterator &other) const {
-                return m_curr != other.m_curr;
-            }
-
-            const_reference operator*() const {
-                return *m_curr;
-            }
-
-            reference operator*() {
-                return *m_curr;
-            }
-
-        private:
-            pointer m_curr;
-        };
-
         typedef std::size_t size_type;
         typedef std::ptrdiff_t difference_type;
 
@@ -92,6 +33,20 @@ namespace ds {
             m_data = m_allocator.allocate(m_capacity);
             for (size_type i = 0; i < m_size; ++i) {
                 m_allocator.construct(m_data + i, other[i]);
+            }
+        }
+
+        array_list(const_iterator a, const_iterator b) {
+            m_size = b - a + 1;
+            m_capacity = m_size;
+            m_data = m_allocator.allocate(m_capacity);
+
+            auto start = b;
+            auto dest = begin();
+            while (start != b) {
+                m_allocator.construct(dest, *start);
+                ++start;
+                ++dest;
             }
         }
 
@@ -136,6 +91,13 @@ namespace ds {
             m_capacity = 0;
         }
 
+        void clear() {
+            for (size_type i = 0; i < m_size; ++i) {
+                m_allocator.destroy(m_data + i);
+            }
+            m_size = 0;
+        }
+
         iterator begin() noexcept {
             return m_data;
         }
@@ -175,11 +137,21 @@ namespace ds {
         const_reference back() const noexcept {
             return m_data[m_size - 1];
         }
+		
+	  
 
         const_reference operator[](const size_type &pos) const {
             return m_data[pos];
         }
         reference operator[](const size_type &pos) {
+            return m_data[pos];
+        }
+	
+        reference at(size_type pos) {
+            if (pos < 0 || pos > m_size) {
+                throw std::out_of_range("Can not access index at" + pos);
+            }    
+
             return m_data[pos];
         }
 
@@ -203,6 +175,50 @@ namespace ds {
             m_allocator.destroy(m_data + m_size - 1);
             --m_size;
         }
+
+        /* Insert an element to the position specified by the iterator pos */
+        iterator insert(const_iterator pos, const value_type& value) {
+            const difference_type index = pos - m_data;
+
+            if (index < 0 || index > size()) {
+                throw new std::out_of_range("Insert index is out of range");
+            }
+
+            if (m_size + 1 > m_capacity) {
+                m_capacity == 0 ? realloc(1) : realloc(m_capacity * GROWTH);
+            }
+
+
+            for (iterator it = end(); it != m_data + index; --it) {
+                m_allocator.construct(it, *(it - 1));
+                m_allocator.destroy(it - 1);
+            }
+
+            m_allocator.construct(m_data + index, value);
+            ++m_size;
+            
+            return m_data + index;
+        } 
+
+        /* Erase an element at the position specified by the iterator pos */
+        iterator erase(const_iterator pos) {
+            const difference_type index = pos - m_data;
+
+            if (index < 0 || index > m_size) {
+                throw std::out_of_range("Iterator is out of range");
+            }
+            
+        
+            m_allocator.destroy(m_data + index);
+            for (iterator it = m_data + index; it != end() - 1; ++it) {
+                m_allocator.construct(it, *(it + 1));
+                m_allocator.destroy(it + 1);
+            }
+            
+            --m_size;
+
+            return m_data + index;
+        }        
 
     private:
         size_type m_size;

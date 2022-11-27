@@ -13,6 +13,7 @@ set(
   undirected_graph_test
 )
 
+add_executable(hash_table_test hash_table_test.cpp)
 add_executable(linked_list_test linked_list_test.cpp)
 add_executable(array_list_test array_list_test.cpp)
 add_executable(insertion_sort_test insertion_sort_test.cpp)
@@ -24,6 +25,7 @@ add_executable(quick_sort_test quick_sort_test.cpp)
 add_executable(priority_queue_test priority_queue_test.cpp)
 add_executable(undirected_graph_test undirected_graph_test.cpp)
 
+target_link_libraries(hash_table_test ds::linked_list ds::array_list ds::hash_table)
 target_link_libraries(linked_list_test ds::linked_list)
 target_link_libraries(undirected_graph_test ds::array_list)
 target_link_libraries(priority_queue_test ds::priority_queue ds::array_list)

@@ -10,106 +10,115 @@
 #include <iostream>
 
 namespace ds {
-    namespace {
-        template <typename T>
-        class linked_list_node {
-        public:
-            typedef T value_type;
-            typedef value_type& reference;
-            typedef const value_type& const_reference; 
+    
+    template <typename T>
+    class linked_list_node {
+    public:
+        typedef T value_type;
+        typedef value_type& reference;
+        typedef const value_type& const_reference; 
 
-            typedef linked_list_node* self_pointer;
-            
-            linked_list_node(const_reference t_value) : m_value(t_value), m_next(nullptr), m_prev(nullptr) {}
-            linked_list_node(const_reference t_value, const self_pointer &t_next, const self_pointer &t_prev) : 
-                m_value(t_value), m_next(t_next), m_prev(t_prev) {}
+        typedef linked_list_node* self_pointer;
+        
+        linked_list_node(const_reference t_value) : m_value(t_value), m_next(nullptr), m_prev(nullptr) {}
+        linked_list_node(const_reference t_value, const self_pointer &t_next, const self_pointer &t_prev) : 
+            m_value(t_value), m_next(t_next), m_prev(t_prev) {}
 
-            linked_list_node(const linked_list_node& other) : 
-                m_value(other.m_value), m_next(other.m_next), m_prev(other.m_prev) {}
+        linked_list_node(const linked_list_node& other) : 
+            m_value(other.m_value), m_next(other.m_next), m_prev(other.m_prev) {}
 
-            value_type& value() {
-                return m_value;
-            }
+        value_type& value() {
+            return m_value;
+        }
 
-            self_pointer& next() {
-                return m_next;
-            }
+        self_pointer& next() {
+            return m_next;
+        }
 
-            self_pointer& prev() {
-                return m_prev;
-            }
-            
-            const value_type& value() const {
-                return m_value;
-            }
+        self_pointer& prev() {
+            return m_prev;
+        }
+        
+        const value_type& value() const {
+            return m_value;
+        }
 
-            const self_pointer& next() const {
-                return m_next;
-            }
+        const self_pointer& next() const {
+            return m_next;
+        }
 
-            const self_pointer& prev() const {
-                return m_prev;
-            }
-        private:
-            value_type m_value;
-            self_pointer m_next;
-            self_pointer m_prev;
-        };
-    }
+        const self_pointer& prev() const {
+            return m_prev;
+        }
+    private:
+        value_type m_value;
+        self_pointer m_next;
+        self_pointer m_prev;
+    };
+    
+
+    template <typename U>
+    class linked_list_iterator {
+    public:
+        typedef U value_type;
+        typedef value_type& reference;
+        typedef const value_type& const_reference;
+        typedef value_type* pointer;
+        typedef const value_type* const_pointer;
+        typedef linked_list_node<value_type>* pointer_type;
+
+        linked_list_iterator(const pointer_type &t_curr) : m_curr(t_curr) {}
+
+        pointer_type operator()() {
+            return m_curr;
+        }
+
+        const pointer_type operator()() const {
+            return m_curr;
+        }
+
+        linked_list_iterator& operator++() {
+            m_curr = m_curr->next();
+            return *this;
+        }
+
+        linked_list_iterator& operator--() {
+            m_curr = m_curr->prev();
+            return *this;
+        }
+
+        bool operator==(const linked_list_iterator &other) const {
+            return m_curr == other.m_curr;
+        }
+
+        bool operator!=(const linked_list_iterator &other) const {
+            return m_curr != other.m_curr;
+        }
+
+        const_reference operator*() const {
+            return m_curr->value();
+        }
+
+        reference operator*() {
+            return m_curr->value();
+        }
+
+        pointer operator->() {
+            return &(m_curr->value());
+        }
+
+        const pointer operator->() const {
+            return &(m_curr->value());
+        }
+
+    private:
+        pointer_type m_curr;
+    };
+
 
     template <typename T, class Allocator = std::allocator<linked_list_node<T>>>
     class linked_list {
     public: 
-        template<typename U>
-        class linked_list_iterator {
-        public:
-            typedef U value_type;
-            typedef value_type& reference;
-            typedef const value_type& const_reference;
-            typedef value_type* pointer;
-            typedef const value_type* const_pointer;
-            typedef linked_list_node<value_type>* pointer_type;
-
-            linked_list_iterator(const pointer_type &t_curr) : m_curr(t_curr) {}
-
-            pointer_type operator()() {
-                return m_curr;
-            }
-
-            const pointer_type operator()() const {
-                return m_curr;
-            }
-
-            linked_list_iterator& operator++() {
-                m_curr = m_curr->next();
-                return *this;
-            }
-
-            linked_list_iterator& operator--() {
-                m_curr = m_curr->prev();
-                return *this;
-            }
-
-            bool operator==(const linked_list_iterator &other) const {
-                return m_curr == other.m_curr;
-            }
-
-            bool operator!=(const linked_list_iterator &other) const {
-                return m_curr != other.m_curr;
-            }
-
-            const_reference operator*() const {
-                return m_curr->value();
-            }
-
-            reference operator*() {
-                return m_curr->value();
-            }
-
-        private:
-            pointer_type m_curr;
-        };
-
         typedef T value_type;
         typedef value_type& reference;
         typedef const value_type& const_reference;
@@ -152,6 +161,10 @@ namespace ds {
             m_head = nullptr;
             m_tail = nullptr;
             m_size = 0;
+        }
+
+        void clear() noexcept {
+            this->~linked_list();
         }
 
         linked_list& operator=(const linked_list& other) {
@@ -282,9 +295,18 @@ namespace ds {
                 return iterator(m_head);
             }
 
+            if (position == end()) {
+                new_node->prev() = m_tail;
+                m_tail->next() = new_node;
+                m_tail = new_node;
+                ++m_size;
+                return iterator(m_tail);
+            }
+
             new_node->next() = position();
             new_node->prev() = position()->prev();
             position()->prev()->next() = new_node;
+            ++m_size;
 
             return iterator(new_node);
         }
@@ -315,7 +337,74 @@ namespace ds {
             --m_size;
             return next_node;
         }
-    // private:
+
+        /************************************
+         * Needs to overload == for this
+         ************************************/
+        
+        iterator find(const value_type &value) {
+            auto start = m_head;
+
+            while (start != nullptr) {
+                if (start->value() == value) {
+                    return iterator(start);
+                }
+                start = start->next();
+            }
+
+            return iterator(nullptr);
+        }
+
+        /*****************************************
+         * Needs to overload < operator
+         * Assumes from low to high
+         *****************************************/
+
+        void insert_order(const value_type& t_value) {
+            auto new_node = m_allocator.allocate(1);
+            m_allocator.construct(new_node, linked_list_node(t_value));
+
+            if (empty()) {
+                m_head = new_node;
+                m_tail = new_node;
+                ++m_size;
+                return;
+            }
+
+            if (t_value < m_head->value()) {
+                m_head->prev() = new_node;
+                new_node->next() = m_head;
+                m_head = new_node;
+                ++m_size;
+                return;
+            }
+
+            auto start = m_head;
+
+            while (start != nullptr) {
+                if (t_value < start->value()) {
+                    break;
+                }
+                start = start->next();
+            }
+            
+            if (start == nullptr) {
+                m_tail->next() = new_node;
+                new_node->prev() = m_tail;
+                m_tail = new_node;
+                ++m_size;
+            } else {
+                start = start->prev();
+
+                start->next()->prev() = new_node;
+                new_node->next() = start->next();            
+                start->next() = new_node;
+                new_node->prev() = start;
+                ++m_size;
+            }
+        }
+               
+    private:
         allocator_type m_allocator;
         p_node_type m_head;
         p_node_type m_tail;

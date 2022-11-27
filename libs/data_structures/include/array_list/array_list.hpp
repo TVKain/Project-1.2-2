@@ -138,8 +138,6 @@ namespace ds {
             return m_data[m_size - 1];
         }
 		
-	  
-
         const_reference operator[](const size_type &pos) const {
             return m_data[pos];
         }

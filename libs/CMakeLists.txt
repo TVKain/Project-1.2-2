@@ -26,3 +26,4 @@ add_test(NAME UndirectedGraphTest COMMAND undirected_graph_test)
 
 
 add_test(NAME LinkedListTest COMMAND linked_list_test)
+add_test(NAME HashTableTest COMMAND hash_table_test)
